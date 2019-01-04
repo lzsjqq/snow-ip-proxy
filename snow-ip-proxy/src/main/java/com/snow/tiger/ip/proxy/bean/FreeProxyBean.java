@@ -16,7 +16,7 @@ public class FreeProxyBean implements Serializable {
     private Integer anonymity;// 是否高匿
     // 1 yes 2 no
     private Integer type;// 是否为https
-    private Double speed;// 访问速度
+    private Integer speed;// 访问速度
     private String source;// 来源
     private Integer foreign;// 是否可翻墙1：可   2：不可
     private Integer failTime;// 失败次数
@@ -80,12 +80,11 @@ public class FreeProxyBean implements Serializable {
         this.anonymity = anonymity;
     }
 
-
-    public Double getSpeed() {
+    public Integer getSpeed() {
         return speed;
     }
 
-    public void setSpeed(Double speed) {
+    public void setSpeed(Integer speed) {
         this.speed = speed;
     }
 

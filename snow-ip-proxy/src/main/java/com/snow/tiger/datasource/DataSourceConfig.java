@@ -23,7 +23,7 @@ import java.util.List;
  * Web基础数据源
  */
 @Configuration
-@MapperScan(basePackages = {"com.snow.tiger.ip.proxy.dao"}, sqlSessionTemplateRef = "primarySqlSessionTemplate")
+@MapperScan(basePackages = {"com.snow.tiger.ip.proxy.mapper"}, sqlSessionTemplateRef = "primarySqlSessionTemplate")
 public class DataSourceConfig {
 
 

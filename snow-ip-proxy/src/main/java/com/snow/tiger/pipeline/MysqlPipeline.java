@@ -2,7 +2,7 @@ package com.snow.tiger.pipeline;
 
 import com.alibaba.fastjson.JSONObject;
 import com.snow.tiger.ip.proxy.bean.FreeProxyBean;
-import com.snow.tiger.ip.proxy.dao.FreeProxyDao;
+import com.snow.tiger.ip.proxy.mapper.FreeProxyMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class MysqlPipeline implements Pipeline {
     @Autowired
-    private FreeProxyDao ipProxyDao;
+    private FreeProxyMapper ipProxyDao;
 
     @Override
     public void process(ResultItems resultItems, Task task) {

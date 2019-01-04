@@ -28,7 +28,7 @@ public class CheckProxyQuartz {
     @Autowired
     private FreeProxyMapper proxyDao;
 
-    @Scheduled(cron = "0 /10 * * * ?")
+    @Scheduled(cron = "0 1/10 * * * ?")
     public void run() {
         FreeProxyBean bean = new FreeProxyBean();
         bean.setForeign(1);
@@ -43,7 +43,7 @@ public class CheckProxyQuartz {
             for (FreeProxyBean proxy : list) {
                 threadPool.execute(() -> {
                     try {
-                        boolean b = ProxyTestUtil.testTwProxy(proxy.getHost(), String.valueOf(proxy.getPort()));
+                        boolean b = ProxyTestUtil.testTwProxy(proxy.getHost(), String.valueOf(proxy.getPort()))._1();
                         if (!b) {
                             proxyDao.delete(proxy.getId());
                         }

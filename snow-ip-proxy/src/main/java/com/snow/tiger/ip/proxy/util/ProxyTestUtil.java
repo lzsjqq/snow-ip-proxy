@@ -40,6 +40,7 @@ public class ProxyTestUtil {
         breakCondition.add("403 Forbidden");
         ////////////////////////////////////////////
         sucCondition.add("Twitter");
+        sucCondition.add("百度");
     }
 
     /**
@@ -77,7 +78,7 @@ public class ProxyTestUtil {
      * @param port
      * @return
      */
-    public static boolean testTwProxy(String host, String port) {
+    public static Tuple2<Boolean, Integer> testTwProxy(String host, String port) {
         return testProxy(host, port, "http://twitter.com");
     }
 
@@ -86,19 +87,31 @@ public class ProxyTestUtil {
      * @param port
      * @return
      */
-    public static boolean testProxy(String host, String port, String url) {
+    public static Tuple2<Boolean, Integer> testBdProxy(String host, String port) {
+        return testProxy(host, port, "https://www.baidu.com/");
+    }
+    /**
+     * @param host
+     * @param port
+     * @return
+     */
+    public static Tuple2<Boolean, Integer> testProxy(String host, String port, String url) {
         HttpClientDownloader proxyDownload = getProxyDownload(host, port);
         int hadlerTime = 0;
+        long speed = 0;
         while (hadlerTime < TRY_TIME) {
+            long start = System.currentTimeMillis();
             Page page = proxyDownload.download(new Request(url), Site.me().setCharset("utf-8").toTask());
+            long end = System.currentTimeMillis();
+            speed = (end - start) / 1000;
             if (page.isDownloadSuccess()) {
                 Html html = page.getHtml();
                 String rawText = html.xpath("//title/text()").get();
                 System.err.println(".............................................." + rawText);
                 if (!StringUtils.isBlank(rawText) && isBreak(rawText)) {
-                    return false;
+                    return new Tuple2<>(false, (int) speed);
                 } else if (StringUtils.isNotBlank(rawText) && isSuc(rawText)) {
-                    return true;
+                    return new Tuple2<>(true, (int) speed);
                 }
                 rawText = html.xpath("//body/text()").get();
                 if (rawText.contains("Maximum number")) {
@@ -114,24 +127,24 @@ public class ProxyTestUtil {
             } else {
                 // 请求超时返回
                 if (page.getException() instanceof ConnectTimeoutException) {
-                    return false;
+                    return new Tuple2<>(false, (int) speed);
                 }
                 if (page.getException() instanceof SocketTimeoutException) {
-                    return false;
+                    return new Tuple2<>(false, (int) speed);
                 }
                 if (page.getException() instanceof SocketException) {
-                    return false;
+                    return new Tuple2<>(false, (int) speed);
                 }
                 hadlerTime++;
                 continue;
             }
         }
-        return false;
+        return new Tuple2<>(false, (int) speed);
     }
 
 
     public static void main(String[] args) {
-        boolean b = testProxy("1.32.57.157", "58556", "http://twitter.com");
+        testProxy("1.32.57.157", "58556", "http://twitter.com");
     }
 
 
