@@ -14,7 +14,7 @@ public class FreeProxyCrawlQuartz {
 
 
     //    @Scheduled(cron = "0 0/10 * * * ?")
-    @Scheduled(fixedDelay = 1000)
+//    @Scheduled(fixedDelay = 1000)
     public void runIp66() {
         String[] args = {};
         Ip66Processor.main(args);

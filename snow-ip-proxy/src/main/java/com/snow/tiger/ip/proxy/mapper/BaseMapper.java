@@ -1,4 +1,4 @@
-package com.snow.tiger.ip.proxy.dao;
+package com.snow.tiger.ip.proxy.mapper;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 
-public interface BaseDao<T> {
+public interface BaseMapper<T> {
 
 
     /**
@@ -42,7 +42,7 @@ public interface BaseDao<T> {
      * @param id
      * @throws Exception
      */
-    void delete(Serializable id) throws Exception;
+    void delete(@Param("id") Serializable id) throws Exception;
 
     /**
      * query by param

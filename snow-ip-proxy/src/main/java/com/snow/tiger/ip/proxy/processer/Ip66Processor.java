@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class Ip66Processor implements PageProcessor {
 
-    private static String url = "http://www.66ip.cn";
+    private static String url = "http://www.66ip.cn/areaindex_33/1.html";
     private static String testUrl = "https://twitter.com/";
     //    private static String testUrl = "https://www.baidu.com/";
     // 部分一：抓取网站的相关配置，包括编码、抓取间隔、重试次数等
@@ -58,41 +58,38 @@ public class Ip66Processor implements PageProcessor {
         // 部分二：定义如何抽取页面信息，并保存下来
         Html html = page.getHtml();
         ///div/div/div
-        List<Selectable> hosts = html.xpath("//div[@id='main']/div/div/table/tbody/tr/td[1]/text()").nodes();
-        List<Selectable> ports = html.xpath("//div[@id='main']/div/div/table/tbody/tr/td[2]/text()").nodes();
-        List<Selectable> anonymitys = html.xpath("//div[@id='main']/div/div/table/tbody/tr/td[4]/text()").nodes();
+        List<Selectable> hosts = html.xpath("//div[@id='main']/div/div/div/div/div/table/tbody/tr/td[1]/text()").nodes();
+        List<Selectable> ports = html.xpath("//div[@id='main']/div/div/div/div/div/table/tbody/tr/td[2]/text()").nodes();
+        List<Selectable> anonymitys = html.xpath("//div[@id='main']/div/div/div/div/div/table/tbody/tr/td[4]/text()").nodes();
 //    List<Selectable> ports = page.getHtml().xpath("//table/tbody/tr/td[3]/text()").nodes();
         List<FreeProxyBean> proxys = new LinkedList<>();
         for (int i = 1; i < hosts.size(); i++) {
-            FreeProxyBean proxyBean = new FreeProxyBean();
-            proxyBean.setSource(url);
             String host = hosts.get(i).get();
-            proxyBean.setHost(host);
             String port = ports.get(i).get();
             String anonymity = anonymitys.get(i).get();
-            if (anonymity.contains("高匿")) {
-                proxyBean.setAnonymity(1);
-            } else if (anonymity.contains("透明")) {
-                proxyBean.setAnonymity(3);
-            } else {
-                proxyBean.setAnonymity(2);
-            }
-            proxyBean.setPort(Integer.valueOf(port));
-            proxyBean.setType(1);
-            if (ProxyTestUtil.testProxy(host, port, testUrl)) {
+            if (ProxyTestUtil.testTwProxy(host, port)) {
+                FreeProxyBean proxyBean = new FreeProxyBean();
+                proxyBean.setHost(host);
+                proxyBean.setSource(page.getRequest().getUrl());
+                if (anonymity.contains("高匿")) {
+                    proxyBean.setAnonymity(1);
+                } else if (anonymity.contains("透明")) {
+                    proxyBean.setAnonymity(3);
+                } else {
+                    proxyBean.setAnonymity(2);
+                }
+                proxyBean.setPort(Integer.valueOf(port));
+                proxyBean.setType(1);
+                proxyBean.setForeign(1);
                 proxys.add(proxyBean);
             }
         }
         page.putField("proxy", JSONObject.toJSONString(proxys));
-//        if (page.getResultItems().get("name") == null) {
-//            //skip this page
-//            page.setSkip(true);
-//        }
 //        page.putField("readme", page.getHtml().xpath("//div[@id='readme']/tidyText()"));
 //        // 部分三： 从页面发现后续的url地址来抓取
         Selectable links = html.links();
 
-        page.addTargetRequests(links.regex("/\\d+.html").all());
+        page.addTargetRequests(links.regex("/areaindex_\\d+/\\d+.html").all());
     }
 
     @Override

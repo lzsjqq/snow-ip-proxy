@@ -1,6 +1,7 @@
 package com.snow.tiger.ip.proxy.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @Author: xyc
@@ -8,6 +9,7 @@ import java.io.Serializable;
  * @Version 1.0
  */
 public class FreeProxyBean implements Serializable {
+    private Integer id;
     private String host;// ip
     private Integer port;// 端口
     //1:高匿 2:匿名 3:透明
@@ -19,6 +21,41 @@ public class FreeProxyBean implements Serializable {
     private Integer foreign;// 是否可翻墙1：可   2：不可
     private Integer failTime;// 失败次数
     private Integer sucTime;// 成功次数
+    private Date creatTime;
+    private Date updateTime;
+
+    public Integer getFailTime() {
+        return failTime;
+    }
+
+    public void setFailTime(Integer failTime) {
+        this.failTime = failTime;
+    }
+
+    public Integer getSucTime() {
+        return sucTime;
+    }
+
+    public void setSucTime(Integer sucTime) {
+        this.sucTime = sucTime;
+    }
+
+    public Date getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Date creatTime) {
+        this.creatTime = creatTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
     public String getHost() {
         return host;
     }
@@ -74,5 +111,13 @@ public class FreeProxyBean implements Serializable {
 
     public void setForeign(Integer foreign) {
         this.foreign = foreign;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

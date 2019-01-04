@@ -1,12 +1,13 @@
-package com.snow.tiger.ip.proxy.dao;
+package com.snow.tiger.ip.proxy.mapper;
 
 
 import com.snow.tiger.ip.proxy.bean.FreeProxyBean;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-
-public interface FreeProxyDao extends BaseDao<FreeProxyBean> {
+@Mapper
+public interface FreeProxyMapper extends BaseMapper<FreeProxyBean> {
     /**
      * 批量更新
      *
